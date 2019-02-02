@@ -91,51 +91,6 @@ int minval(const vector<node>& bst){
 	}
 }
 
-/* DELETE CAN'T BE IMPLEMENTED AS WE USED VECTOR. */
-int del(int parent,int it, vector<node>& bst){
-	vector<node>::iterator itr = bst.begin();
-	if(bst[it].rc == -1 && bst[it].lc == -1){
-		if(bst[parent].val > bst[it].val) bst[parent].lc = -1;
-		else bst[parent].rc = -1;
-		bst.erase(itr+it);
-	}
-	else if(bst[it].rc == -1 && bst[it].lc != -1){
-		int temp = bst[it].lc;
-		if(bst[parent].val > bst[it].val) bst[parent].lc = temp;
-		else bst[parent].rc = temp;
-		bst.erase(itr+it);
-	}
-	else if(bst[it].lc == -1 && bst[it].rc != -1){
-		int temp = bst[it].rc;
-		bst[it] = bst[temp];
-		bst.erase(itr+temp);
-	}
-	else{
-		int temp = bst[it].rc;
-		bst[temp].lc = bst[it].lc;
-		bst[it] = bst[temp];
-		bst.erase(itr+temp);
-	}
-
-	return 1;
-}
-
-int delval_aux(int parent,int val, int it, vector<node>& bst){
-	if(bst[it].val == val) return del(parent,it,bst);
-	else if(bst[it].val > val){
-		if(bst[it].lc == -1) return 0;
-		delval_aux(it,val,bst[it].lc,bst);
-	}
-	else {
-		if(bst[it].rc == -1) return 0;
-		delval_aux(it,val,bst[it].rc,bst);
-	}
-}
-
-int delval(int val,vector<node>& bst){
-	if(!bst.empty()) return delval_aux(-1,val,0,bst);
-}
-
 void inorder_aux(int it,const vector<node>& bst){
 	if(bst[it].lc!=-1) inorder_aux(bst[it].lc,bst);
 	cout << bst[it].val << endl;
@@ -167,10 +122,6 @@ int main(){
 	disp(bst);
 
 	for(int i = 0;i!=bst.size();++i) cout << bst[i].val <<" " <<  bst[i].rc << " " << bst[i].lc << endl;
-
-	inorder(bst);
-
-	delval(5,bst);
 
 	inorder(bst);
 
